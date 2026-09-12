@@ -148,7 +148,7 @@ body.coarse #hintBar{bottom:calc(322px + env(safe-area-inset-bottom))}
 .toast.small{color:var(--dim)}
 @keyframes toastin{from{transform:translateY(-8px);opacity:0}}
 
-/* 대화창: 화면을 벗어나지 않게 최대 높이 + 내부 스크롤 */
+/* 대화창 */
 #dlg{position:absolute;left:50%;transform:translateX(-50%);
   bottom:calc(22px + env(safe-area-inset-bottom));width:430px;max-width:calc(100vw - 20px);
   padding:12px;pointer-events:auto;display:none;
@@ -157,7 +157,6 @@ body.coarse #hintBar{bottom:calc(322px + env(safe-area-inset-bottom))}
 body.coarse #dlg{bottom:calc(160px + env(safe-area-inset-bottom));max-height:calc(100vh - 180px)}
 .dlgName{color:var(--amber);font-size:12px;margin-bottom:5px}
 .dlgText{min-height:44px;font-size:12px;color:var(--tx)}
-/* 상점 목록: 자체 스크롤 + 상단 헤더(닫기) 고정 */
 .dlgShop{margin-top:4px;max-height:40vh;overflow-y:auto;touch-action:pan-y}
 .dlgShop .sectbtn{position:sticky;top:0;z-index:1;background:rgba(18,24,17,.96);
   margin:0 0 5px;padding:4px 0 5px}
@@ -180,6 +179,42 @@ body.coarse #ctrl{display:block}
 #btnRun{right:calc(100px + env(safe-area-inset-right));bottom:calc(26px + env(safe-area-inset-bottom));width:56px;height:56px}
 #btnUse{right:calc(18px + env(safe-area-inset-right));bottom:calc(166px + env(safe-area-inset-bottom));width:52px;height:52px}
 #btnUse.hot{border-color:var(--amber2);background:rgba(90,74,34,.85);animation:selpulse .9s steps(2) infinite}
+
+/* 튜토리얼 UI */
+#tutOv{position:fixed;inset:0;z-index:55;display:none;align-items:center;justify-content:center;
+ background:rgba(5,8,5,.72)}
+#tutOv.show{display:flex}
+#tutBox{width:440px;max-width:calc(100vw - 24px);max-height:calc(100vh - 40px);overflow-y:auto;
+  padding:22px 26px;pointer-events:auto;text-align:left;
+  background:rgba(18,24,17,.97);border:1px solid var(--line2);box-shadow:0 4px 0 rgba(0,0,0,.5);touch-action:pan-y}
+#tutBox h2{color:var(--amber2);font-size:17px;margin-bottom:4px;letter-spacing:1px}
+#tutBox .tutSpeaker{color:var(--amber);font-size:11px;margin-bottom:8px}
+#tutBox p{font-size:12px;color:var(--tx);line-height:1.7;margin-bottom:8px;word-break:keep-all}
+#tutBox .tutHintLine{font-size:10px;color:var(--dim);border-top:1px solid var(--line);padding-top:8px;margin-top:4px}
+#tutBox .tutRow{display:flex;gap:8px;margin-top:12px;justify-content:flex-end;align-items:center}
+#tutBox button{font-family:var(--px);font-size:12px;color:var(--tx);pointer-events:auto;
+  background:var(--panel2);border:1px solid var(--line2);padding:8px 16px;cursor:pointer;
+  box-shadow:0 2px 0 rgba(0,0,0,.5)}
+#tutBox button.acc{background:var(--amber);border-color:var(--amber2);color:#231a08}
+#tutBox button.ghost{background:transparent;border-color:transparent;box-shadow:none;color:var(--dim);font-size:10px;padding:8px 6px}
+#tutBox button:active{transform:translateY(2px);box-shadow:none}
+
+#tutSteps{position:absolute;top:calc(10px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);
+  display:none;flex-direction:column;align-items:center;gap:3px;pointer-events:none;z-index:12}
+#tutSteps.show{display:flex}
+#tutStepsTitle{font-size:10px;color:var(--dim)}
+#tutStepsList{display:flex;gap:4px;padding:5px 8px;background:rgba(18,24,17,.88);border:1px solid var(--line)}
+.tstep{width:9px;height:9px;background:#2a3527;border:1px solid var(--line)}
+.tstep.done{background:var(--green);border-color:var(--green)}
+.tstep.cur{background:transparent;border-color:var(--amber2);animation:selpulse .8s steps(2) infinite}
+body.coarse #tutSteps{top:calc(40px + env(safe-area-inset-top))}
+
+#tutMsg{position:absolute;top:38%;left:50%;transform:translate(-50%,-50%);
+  max-width:88vw;padding:10px 18px;pointer-events:none;z-index:12;
+  color:var(--amber2);font-size:13px;text-align:center;display:none;
+  background:rgba(13,18,13,.88);border:1px solid var(--amber);box-shadow:0 3px 0 rgba(0,0,0,.5)}
+#tutMsg.show{display:block}
+body.coarse #tutMsg{top:30%}
 
 #mapOv{position:fixed;inset:0;z-index:45;display:none;flex-direction:column;
   background:rgba(7,11,8,.9)}
@@ -290,11 +325,18 @@ body.coarse .bsel canvas{width:22px;height:22px}
   <div id="sysBtns">
     <button id="btnPause" title="Pause"><svg width="10" height="12" viewBox="0 0 10 12"><rect x="1" y="1" width="3" height="10" fill="#e8e2cf"/><rect x="6" y="1" width="3" height="10" fill="#e8e2cf"/></svg></button>
     <button id="btnBag" title="Bag"><svg width="13" height="13" viewBox="0 0 14 14"><path d="M3 5h8l1 7H2z" fill="none" stroke="#e8e2cf" stroke-width="1.5"/><path d="M5 5V3.5a2 2 0 0 1 4 0V5" fill="none" stroke="#e8e2cf" stroke-width="1.5"/></svg></button>
+    <button id="btnTut" title="Tutorial">?</button>
     <button id="btnLang">EN</button>
-    <button id="btnHelp">?</button>
+    <button id="btnHelp">⌘</button>
     <button id="btnMute"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M1 4h2l3-3v10L3 8H1z" fill="#e8e2cf"/><path id="sndWave" d="M8 4c1.5 1 1.5 3 0 4" stroke="#e8e2cf" fill="none"/></svg></button>
     <button id="btnFS" title="Fullscreen"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M1 4V1h3M8 1h3v3M11 8v3H8M4 11H1V8" fill="none" stroke="#e8e2cf" stroke-width="1.5"/></svg></button>
   </div>
+
+  <div id="tutSteps">
+    <span id="tutStepsTitle"></span>
+    <div id="tutStepsList"></div>
+  </div>
+  <div id="tutMsg"></div>
 
   <div id="panel" class="panel">
     <div id="panelTabs">
@@ -329,6 +371,19 @@ body.coarse .bsel canvas{width:22px;height:22px}
   <div class="cbtn" id="btnAtk"></div>
   <div class="cbtn" id="btnRun"></div>
   <div class="cbtn" id="btnUse"></div>
+</div>
+
+<div id="tutOv">
+  <div id="tutBox">
+    <div class="tutSpeaker" id="tutSpeaker"></div>
+    <h2 id="tutTitle"></h2>
+    <div id="tutBody"></div>
+    <div class="tutHintLine" id="tutHintLine"></div>
+    <div class="tutRow">
+      <button class="ghost" id="tutSkip"></button>
+      <button class="acc" id="tutOk"></button>
+    </div>
+  </div>
 </div>
 
 <div id="mapOv">
@@ -403,25 +458,18 @@ body.coarse .bsel canvas{width:22px;height:22px}
 'use strict';
 /* ================================================================
    떠돌이 / DRIFTER — 목적 없는 무한 탐험
-   [전면 분석 패치 — 발견·수정된 버그]
-   1. 타이틀 화면 키 입력 버그 — keydown에 state 가드가 없어
-      타이틀에서 P(일시정지 오버레이가 타이틀 위에 표시),
-      Z/Q/X/G(아이템 소모) 등이 동작하던 것을 차단 (F 전체화면만 허용)
-   2. 액션 버튼 고정 버그 — 버튼을 누른 채 손가락이 밖으로 밀려나
-      떼면 pointerup이 버튼에 전달되지 않아 attackHeld/runHeld가
-      true로 고정 → 자동 공격/자동 달리기. setPointerCapture로 수정
-   3. 낡은 장화 낚시 성공 시 물고기 과업에 카운트되지 않던 것 수정
-   4. NPC 근처 행동 버튼 강조(hot)가 낚시 패치에서 빠져 있던 것 복원
-   5. 대화 중 소모품 사용(Z/Q/X/G) 가능하던 것 차단
-   6. 클릭 쿨타임 — 타이틀 화면 버튼에는 적용하지 않게(버튼 무반응
-      처럼 보이던 것) + 차단된 pointerdown 후 click이 armed 플래그
-      릭으로 우회하던 엣지 케이스 봉쇄
-   7. 타이틀에서 언어/음소거 변경이 저장되지 않던 것 수정
-      (환경설정 즉시 저장 + 부팅 시 복원)
+   [이번 패치] 튜토리얼 달리기 단계 수정
+   - 원인: tutTrackMove의 달리기 체크가 '!tut.ran' 조건 안에
+     갇혀 있어, ran이 true로 바뀐 그 한 프레임에만 완료 검사가
+     실행되고 이후엔 블록 자체에 들어가지 못했음 → 영원히
+     완료 불가. '최고치 대비 닳은 양' 방식으로 교체해 매 프레임
+     평가. 막대가 20% 정도 닳으면(달리기 약 1~1.5초) 통과.
+   - 추가: 채집(4단계)도 완료 처리가 빠져 있어 함께 수정
+     (tut.gathered를 설정만 하고 소비하는 곳이 없었음)
    ================================================================ */
 const $=id=>document.getElementById(id);
 const TILE=16, CH=32, CS=TILE*CH, SCALE=2;
-const SAVE_KEY='drifter_save_v1', PREF_KEY='drifter_prefs_v1';
+const SAVE_KEY='drifter_save_v1', PREF_KEY='drifter_prefs_v1', TUT_KEY='drifter_tut_done_v1';
 const clamp=(v,a,b)=>v<a?a:v>b?b:v;
 const rand=(a,b)=>a+Math.random()*(b-a);
 const choice=a=>a[Math.floor(Math.random()*a.length)];
@@ -500,6 +548,37 @@ ko:{
  helpSave:'진행 상황은 자동으로 저장된다. F키로 전체화면. 등불을 든 방랑자는 적이 아니다.',
  npcW:'방랑자', npcT:'행상인',
  mobSlime:'슬라임', mobWolf:'늑대', mobGolem:'골렘', mobSpider:'거미', mobBat:'박쥐',
+ /* ---- 튜토리얼 ---- */
+ tutBtn:'튜토리얼', tutBtnTitle:'기초 걷기 수업 다시 듣기',
+ tutSpeaker:'웬 방랑자',
+ tutOTitle:'떠돌이의 첫걸음',
+ tutO1:'……어이, 잠깐. 그 맨발로 어디를 가려고.',
+ tutO2:'마침 여분의 장화가 있어. 신어. 그리고 이건 첫걸음의 예의야 — 걷는 법부터 익혀야지.',
+ tutO3:'괜찮아, 어렵지 않아. 발이 닿는 대로 걷다 보면 저절로 다 알게 돼.',
+ tutOHint:'아래의 간단한 수업을 마치면 길은 알아서 보여준다. 세상의 나머지는, 알아서.',
+ tutSkip:'건너뛰기', tutStart:'수업 시작',
+ tutDoneTitle:'수업 끝',
+ tutDone1:'……그 정도면 됐어. 이제 걷는 건 문제없겠군.',
+ tutDone2:'남은 건 네 발이 할 일이야. 이 지도에서 뭘 만나든, 무엇을 주우든 — 그건 걸어가는 네 몫이다.',
+ tutDone3:'안개 너머는 스스로 걸어서 확인해. 가끔은 여기저기 흘러다니는 우리 같은 떠돌이에게 말을 걸어 봐.',
+ tutDoneHint:'도움이 필요하면 ? 버튼이나 T 키로 이 수업을 다시 들을 수 있다.',
+ tutGo:'걷기 시작',
+ tutStepsTitle:'첫걸음 수업',
+ tutMsgs:{
+  move:{d:'WASD 또는 방향키로 걸어 보자. 조금만 걸으면 돼.',m:'화면을 아무 곳이나 끌어서 걸어 보자. 조금만 걸으면 돼.'},
+  far:{d:'반대 방향도 가 보자. 어느 쪽이든 갈 수 있다.',m:'반대 방향으로도 끌어서 가 보자. 어느 쪽이든 갈 수 있다.'},
+  run:{d:'Shift를 누른 채 걸으면 달린다. 노란 스테미너 막대가 눈에 띄게 닳을 때까지 달려 보자.',m:'달리기 버튼을 누른 채 끌면 달린다. 노란 막대가 눈에 띄게 닳을 때까지 달려 보자.'},
+  gather:{d:'주변의 나무나 돌 근처로 가서 J 또는 Space를 눌러 채집해 보자.',m:'주변의 나무나 돌 근처로 가서 채집 버튼을 꾹 눌러 보자.'},
+  pickup:{d:'캔 자원은 스스로 모인다. 근처에 떨어진 장비가 있다면 E를 눌러 배낭을 열어 확인하자.',m:'캔 자원은 스스로 모인다. 근처에 떨어진 장비가 있다면 행동 버튼을 눌러 확인하자.'},
+  equip:{d:'배낭의 근처의 전리품에서 장비를 착용해 보자. 같은 자리는 세 개까지 꽂을 수 있다.',m:'배낭의 근처의 전리품에서 장비를 착용해 보자. 같은 자리는 세 개까지 꽂을 수 있다.'},
+  quest:{d:'마지막으로 배낭의 과업을 확인하자. 떠돌이에게 어울리는 일감이 세 개 늘어서 있다.',m:'마지막으로 배낭의 과업을 확인하자. 떠돌이에게 어울리는 일감이 세 개 늘어서 있다.'},
+ },
+ tutChk:{
+  move:'몸풀기', far:'먼 곳까지', run:'달리기', gather:'채집',
+  pickup:'줍기', equip:'장비 착용', quest:'과업 확인'},
+ tutComplete:'수업 완료! 방랑자가 고개를 끄덕인다.',
+ tutSkipped:'특별한 안내는 없다. 걷다 보면 다 알게 된다.',
+ tutFirstToast:'길 위의 것들은 E(행동)로 살펴보자',
 },
 en:{
  subtitle:'No destination. Just walk.', cont:'Continue', newgame:'New Journey', yes:'Yes', no:'No',
@@ -564,6 +643,37 @@ en:{
  helpSave:'Progress autosaves. F for fullscreen. Lantern-bearing wanderers are not foes.',
  npcW:'Wanderer', npcT:'Trader',
  mobSlime:'slimes', mobWolf:'wolves', mobGolem:'golems', mobSpider:'spiders', mobBat:'bats',
+ /* ---- Tutorial ---- */
+ tutBtn:'TUTORIAL', tutBtnTitle:'Take the first-steps lesson again',
+ tutSpeaker:'A WANDERER',
+ tutOTitle:'A Drifter\u2019s First Steps',
+ tutO1:'…Hey. Hold on. Where do you think you\u2019re going barefoot like that?',
+ tutO2:'I happen to have a spare pair of boots. Take them. And this — the courtesy of a first step. Learn to walk first.',
+ tutO3:'It\u2019s not hard, I promise. Walk far enough and the rest teaches itself.',
+ tutOHint:'Finish the short lesson below and the road will take care of the rest. What\u2019s out there — that part is yours to find.',
+ tutSkip:'Skip', tutStart:'Begin the lesson',
+ tutDoneTitle:'Lesson\u2019s over',
+ tutDone1:'…That\u2019ll do. Walking\u2019s no problem for you now.',
+ tutDone2:'The rest is your feet\u2019s business. Whatever you meet on this map, whatever you pick up — that\u2019s the walker\u2019s share.',
+ tutDone3:'See past the mist for yourself. And now and then, stop and talk to us drifters drifting by.',
+ tutDoneHint:'You can retake this lesson anytime with the TUTORIAL button or the T key.',
+ tutGo:'Start walking',
+ tutStepsTitle:'FIRST STEPS',
+ tutMsgs:{
+  move:{d:'Walk with WASD or the arrow keys. Just a few steps will do.',m:'Drag anywhere on the screen to walk. Just a few steps will do.'},
+  far:{d:'Now try the opposite direction. Any direction works.',m:'Now drag the opposite way. Any direction works.'},
+  run:{d:'Hold Shift while walking to run. Keep running until the yellow stamina bar visibly drains.',m:'Hold the RUN button while dragging to run. Keep going until the yellow bar visibly drains.'},
+  gather:{d:'Walk up to a tree or rock and press J or Space to gather it.',m:'Walk up to a tree or rock and hold the GATHER button.'},
+  pickup:{d:'Gathered resources collect themselves. If any gear dropped nearby, press E to open the bag and check it.',m:'Gathered resources collect themselves. If any gear dropped nearby, tap USE to check it.'},
+  equip:{d:'Equip something from the Nearby loot section of the bag. The same spot holds up to three pieces.',m:'Equip something from the Nearby loot section of the bag. The same spot holds up to three pieces.'},
+  quest:{d:'Finally, check the errands in your bag. Three odd jobs fit for a drifter await.',m:'Finally, check the errands in your bag. Three odd jobs fit for a drifter await.'},
+ },
+ tutChk:{
+  move:'Warm-up', far:'A little further', run:'Running', gather:'Gathering',
+  pickup:'Picking up', equip:'Equipping gear', quest:'Errands'},
+ tutComplete:'Lesson complete! The wanderer nods.',
+ tutSkipped:'No special guidance. Walk far enough and it all becomes clear.',
+ tutFirstToast:'Press E (USE) to examine things along the road',
 }};
 let LANG='ko';
 const t=k=>{const v=I18N[LANG][k];return typeof v==='function'?v:v||k};
@@ -733,6 +843,106 @@ const lockEquip=()=>{equipLockUntil=gameT+0.45};
 const MAP_CELLS=[2,4,8,16,32];
 let mapZoomIdx=2, mapCX=0, mapCY=0, mapDrag=null, mapMoved=false;
 let mapW=0, mapH=0, mapDrawT=0;
+
+/* ================================================================
+   [튜토리얼] 상태
+   ================================================================ */
+const TUT_STEPS=['move','far','run','gather','pickup','equip','quest'];
+const tut={
+ active:false, idx:0,
+ walked:0, lastX:0, lastY:0,
+ stamPeak:0,          /* 달리기 단계: 스테미너 최고치(회복 포함 추적) */
+ gathered:false, equippedCount:0,
+};
+function tutCur(){return TUT_STEPS[tut.idx]||null}
+function tutStepDone(key){
+ if(!tut.active||tutCur()!==key)return;
+ tut.idx++;
+ sfx('trade');
+ if(tutCur())tutShowStep();
+ else tutFinish()}
+function tutRenderSteps(){
+ const el=$('tutStepsList');
+ if(!tut.active){$('tutSteps').classList.remove('show');return}
+ $('tutStepsTitle').textContent=t('tutStepsTitle');
+ let h='';
+ TUT_STEPS.forEach((k,i)=>{
+  h+='<span class="tstep'+(i<tut.idx?' done':i===tut.idx?' cur':'')+'" title="'+t('tutChk')[k]+'"></span>'});
+ el.innerHTML=h;
+ $('tutSteps').classList.add('show')}
+function tutShowStep(){
+ const k=tutCur();if(!k)return;
+ const m=t('tutMsgs')[k];
+ const el=$('tutMsg');
+ el.textContent=isCoarse()?m.m:m.d;
+ el.classList.add('show');
+ tutRenderSteps();
+ if(k==='move'||k==='far'){tut.walked=0;tut.lastX=player.x;tut.lastY=player.y}
+ if(k==='run')tut.stamPeak=player.stam;
+ if(k==='gather')tut.gathered=false;
+ if(k==='pickup'){} /* 자원/장비 감시는 update에서 */
+ if(k==='equip')tut.equippedCount=player.equip.filter(e=>e).length}
+/* [핵심 수정] 매 프레임 평가 — 이전엔 달리기 체크가 '!tut.ran' 래치
+   안에 갇혀 완료 검사가 단 한 프레임만 실행됐다.
+   새 방식: 단계 시작 후 관측된 스테미너 '최고치'를 계속 갱신하다가,
+   최고치 대비 20% 이상 닳으면(달리기 1~1.5초) 통과.
+   이전에 달려 스테미너가 깎인 채 들어와도: 회복하며 최고치가 올라가고,
+   다시 달리면 그 최고치 기준으로 닳은 양을 측정하므로 정상 동작. */
+function tutTrackMove(dt,moving){
+ if(!tut.active)return;
+ const k=tutCur();
+ if(k==='move'||k==='far'){
+  if(!moving)return;
+  const d=Math.hypot(player.x-tut.lastX,player.y-tut.lastY);
+  if(d>2){tut.walked+=d;tut.lastX=player.x;tut.lastY=player.y}
+  if(tut.walked>60)tutStepDone(k)}
+ else if(k==='run'){
+  if(player.stam>tut.stamPeak)tut.stamPeak=player.stam;
+  const need=clamp(stats.maxStam*0.2,12,30);
+  if(tut.stamPeak-player.stam>=need)tutStepDone('run')}}
+function tutOpenIntro(replay){
+ $('tutSpeaker').textContent=t('tutSpeaker');
+ $('tutTitle').textContent=t('tutOTitle');
+ $('tutBody').innerHTML='<p>'+t('tutO1')+'</p><p>'+t('tutO2')+'</p><p>'+t('tutO3')+'</p>';
+ $('tutHintLine').textContent=t('tutOHint');
+ $('tutSkip').textContent=t('tutSkip');
+ $('tutOk').textContent=t('tutStart');
+ $('tutOk').onclick=()=>{startTutorial()};
+ $('tutSkip').onclick=()=>{skipTutorial(replay)};
+ $('tutOv').classList.add('show')}
+function tutOpenDone(){
+ tut.active=false;
+ $('tutSteps').classList.remove('show');
+ $('tutMsg').classList.remove('show');
+ try{localStorage.setItem(TUT_KEY,'1')}catch(e){}
+ $('tutSpeaker').textContent=t('tutSpeaker');
+ $('tutTitle').textContent=t('tutDoneTitle');
+ $('tutBody').innerHTML='<p>'+t('tutDone1')+'</p><p>'+t('tutDone2')+'</p><p>'+t('tutDone3')+'</p>';
+ $('tutHintLine').textContent=t('tutDoneHint');
+ $('tutSkip').style.display='none';
+ $('tutOk').textContent=t('tutGo');
+ $('tutOk').onclick=()=>{$('tutOv').classList.remove('show')};
+ $('tutOv').classList.add('show')}
+function startTutorial(){
+ $('tutOv').classList.remove('show');
+ $('tutSkip').style.display='';
+ tut.active=true;tut.idx=0;
+ tutShowStep()}
+function skipTutorial(replay){
+ $('tutOv').classList.remove('show');
+ tut.active=false;
+ $('tutSteps').classList.remove('show');
+ $('tutMsg').classList.remove('show');
+ try{localStorage.setItem(TUT_KEY,'1')}catch(e){}
+ if(!replay)toast(t('tutSkipped'),'small')}
+function tutFinish(){
+ toast(t('tutComplete'));
+ sfx('level');
+ tutOpenDone()}
+ $('btnTut').onclick=()=>{ensureAudio();sfx('ui');
+ if(state!=='play'){toast(t('tutBtnTitle'),'small');return}
+ tutOpenIntro(true)};
+function tutIsDone(){try{return !!localStorage.getItem(TUT_KEY)}catch(e){return false}}
 
 /* ================================================================
    전체화면 / 가로 고정
@@ -1052,6 +1262,11 @@ function damageNode(n,d){
  burst(n.x,n.y-10,n.type==='tree'?['#4c8449','#3a6b3f','#7a5533']:
   n.type==='bush'?['#4f8f49','#d8404a']:['#a0a098','#8d8a80',n.type==='iron'?'#d98a4a':'#8d8a80'],8);
  sfx('chop');camShake=Math.min(3,camShake+1);
+ /* [수정] 채집 단계 — 실제 타격이 들어오면 즉시 완료 처리
+    (이전엔 플래그만 설정하고 소비하는 코드가 없어 진행되지 않았음) */
+ if(tut.active&&tutCur()==='gather'){
+  tut.gathered=true;
+  tutStepDone('gather')}
  if(n.hp<=0)breakNode(n)}
 function breakNode(n){
  if(!n||!n.isNode||!NODE_INFO[n.type])return;
@@ -1157,7 +1372,6 @@ function healPlayer(n){
  const d=Math.round(player.hp-before);
  if(d>0){floater(player.x,player.y-26,'+'+d,'#8fd97a');
   burst(player.x,player.y-8,['#8fd97a','#4c8449'],8);sfx('res')}}
-/* [수정5] 대화 중에도 소모품이 사용되던 것 차단 — dlg 가드 추가 */
 function useConsumable(k){
  if(player.dead||paused||dlg)return;
  if(k==='berry'){if(player.res.berry<1){sfx('deny');return}player.res.berry--;healPlayer(4)}
@@ -1232,7 +1446,6 @@ function catchFish(){
  burst(bx,by-3,['#bfe3ec','#e8e2cf','#8fc0d4'],10);
  particles.push({x:bx,y:by,ring:true,life:.6,max:.6,size:4,color:'#bfe3ec'});
  addXP(2);
- /* [수정3] 낡은 장화를 낚아도 과업에 카운트 — 낚시 자체는 성공 */
  questEvent('fish');
  if(f.junk){
   toast(t('fishJunk'),'small');
@@ -1309,7 +1522,6 @@ function updateNearEquip(){
  else if(show&&fs)ph.textContent=isCoarse()?t('fishCastMob'):t('fishCastDesk');
  else if(show&&wr)ph.textContent=isCoarse()?t('warpHintMob'):t('warpHintDesk');
  else if(show)ph.textContent=isCoarse()?t('hintPickMob'):t('hintPickDesk');
- /* [수정4] NPC 근처 강조 복원 (낚시 패치에서 빠져 있었음) */
  $('btnUse').classList.toggle('hot',(show||(npcNear&&!dlg))&&!invOpen);
  if(invOpen&&changed)renderPanel()}
 
@@ -1612,6 +1824,7 @@ function update(dt){
  if(!starActive){starT-=dt;if(starT<=0)spawnStar()}
  const mv=dlg||player.dead?{x:0,y:0}:getMove();
  const moving=mv.x!==0||mv.y!==0;
+ tutTrackMove(dt,moving);
  updateFishing(dt,moving);
  if(player.exhausted&&player.stam>=25)player.exhausted=false;
  let spd=stats.speed;
@@ -1641,6 +1854,15 @@ function update(dt){
  for(const n of activeNpcs()){n.bob+=dt;n.anim+=dt}
  updateGroundRes(dt);
  updateNearEquip();
+ /* 튜토리얼: 줍기/착용 단계 자동 감시 */
+ if(tut.active){
+  const k=tutCur();
+  if(k==='pickup'){
+   const gotRes=(player.res.wood+player.res.stone+player.res.iron+player.res.berry)>0;
+   if(nearItems.length>0||gotRes)tutStepDone('pickup')}
+  else if(k==='equip'){
+   const c=player.equip.filter(e=>e).length;
+   if(c>tut.equippedCount)tutStepDone('equip')}}
  for(let i=groundEquip.length-1;i>=0;i--){
   const g=groundEquip[i];
   if(g.ttl!==null){g.ttl-=dt;
@@ -2474,7 +2696,11 @@ function openInv(tab){
  invOpen=true;invTab=tab||invTab;
  if(!secOpen)secOpen={equip:!isCoarse(),ground:true,use:!isCoarse(),fish:!isCoarse()};
  $('panel').classList.add('show');
- renderPanel();sfx('ui')}
+ renderPanel();sfx('ui');
+ if(tut.active){
+  const k=tutCur();
+  if(k==='pickup'&&(nearItems.length>0))tutStepDone('pickup');
+  if(k==='quest'&&invTab==='bag')tutStepDone('quest')}}
 function closeInv(){invOpen=false;replaceState=null;$('panel').classList.remove('show')}
  $('btnBag').onclick=()=>{ensureAudio();invOpen?closeInv():openInv('bag')};
  $('tabBag').onclick=()=>{invTab='bag';renderPanel();sfx('ui')};
@@ -2607,7 +2833,9 @@ function renderPanel(){
  if(!b)return;
  const act=b.dataset.act;
  if(act==='togSec'){secOpen[b.dataset.sec]=!secOpen[b.dataset.sec];renderPanel();sfx('ui')}
- else if(act==='equipGround'){tryEquipGround(nearItems[+b.dataset.i])}
+ else if(act==='equipGround'){
+  tryEquipGround(nearItems[+b.dataset.i]);
+  if(tut.active&&tutCur()==='equip')tutStepDone('equip')}
  else if(act==='dropGround'){dropGroundItem(nearItems[+b.dataset.i])}
  else if(act==='dropEquip'){dropEquip(+b.dataset.i)}
  else if(act==='replaceSlot'){
@@ -2630,9 +2858,6 @@ function toast(msg,cls){
 /* ================================================================
    입력
    ================================================================ */
-/* [수정1] 타이틀 화면에서 게임 키가 동작하던 버그 — state 가드.
-   (P가 타이틀 위에 일시정지를 띄우고, Z/Q/X/G로 아이템이 소모됐음.
-   전체화면 F만 타이틀에서도 허용) */
 addEventListener('keydown',e=>{
  if(e.repeat){if(['Space','Tab'].includes(e.code))e.preventDefault();return}
  keys[e.code]=true;ensureAudio();
@@ -2644,6 +2869,7 @@ addEventListener('keydown',e=>{
  if(e.code==='KeyE')interact();
  if(e.code==='KeyM'){mapOpen?closeMap():openMap()}
  if(e.code==='KeyP'){if(!modalOpen&&!mapOpen)togglePause()}
+ if(e.code==='KeyT'){tutOpenIntro(true)}
  if(e.code==='Tab'||e.code==='KeyB'){e.preventDefault();invOpen?closeInv():openInv('bag')}
  if(e.code==='KeyC'){invOpen&&invTab==='craft'?closeInv():openInv('craft')}
  if(e.code==='KeyZ')useConsumable('berry');
@@ -2653,7 +2879,9 @@ addEventListener('keydown',e=>{
  if(e.code==='KeyF')toggleFS();
  if(e.code==='KeyH')toggleModal();
  if(e.code==='Escape'){
-  if(modalOpen)toggleModal(false);
+  if($('modal').classList.contains('show'))toggleModal(false);
+  else if($('tutOv').classList.contains('show')){
+   if(tut.active)skipTutorial(false);else $('tutOv').classList.remove('show')}
   else if(invOpen)closeInv();
   else if(mapOpen)closeMap();
   else if(pauseOpen)togglePause(false);
@@ -2692,9 +2920,6 @@ function joyEnd(e){
 pad.addEventListener('pointerup',joyEnd);
 pad.addEventListener('pointercancel',joyEnd);
 
-/* [수정2] 버튼 고정 버그 — pointerup이 버튼 밖에서 일어나면
-   attackHeld/runHeld가 true로 남아 자동 공격/자동 달리기가 되던 것을
-   setPointerCapture로 해결 (손가락이 밀려나도 버튼이 업 이벤트를 받음) */
 function bindBtn(el,down,up){
  el.addEventListener('pointerdown',e=>{e.preventDefault();ensureAudio();el.classList.add('on');
   try{el.setPointerCapture(e.pointerId)}catch(err){}
@@ -2709,10 +2934,6 @@ if(matchMedia('(pointer:coarse)').matches)document.body.classList.add('coarse');
 
 /* ================================================================
    전역 클릭/터치 쿨타임 (0.5초)
-   [수정6] 플레이 중에만 적용(타이틀 버튼은 즉시 반응) +
-   차단된 pointerdown은 armed 플래그를 초기화해
-   뒤따르는 click이 우회 통과하지 않게 함.
-   조이스틱 이동/낚시 릴/지도 드래그는 제외.
    ================================================================ */
 const INT_SEL='button,.slot,#mmWrap,.cbtn,[data-act],[data-buy]';
 let lastTapT=0,armedClickAt=0;
@@ -2753,7 +2974,6 @@ function saveGame(){
    gifted:[...giftedSet],explored:[...explored.entries()]};
   localStorage.setItem(SAVE_KEY,JSON.stringify(d));
  }catch(e){}}
-/* [수정7] 타이틀에서도 언어/음소거가 즉시 저장되게 — 환경설정 분리 */
 function persistPrefs(){
  try{localStorage.setItem(PREF_KEY,JSON.stringify({lang:LANG,muted}))}catch(e){}}
 function hasSave(){try{return !!localStorage.getItem(SAVE_KEY)}catch(e){return false}}
@@ -2822,6 +3042,7 @@ function applyLang(){
  $('tabCraft').textContent=t('pCraft');
  $('mapTitle').textContent=t('mapTitle');
  $('pauseTitle').textContent=t('pauseTitle');
+ $('btnTut').title=t('tutBtnTitle');
  renderPauseStats();
  buildMapLegend();
  $('pauseHint').textContent=t('pauseHint');
@@ -2833,6 +3054,7 @@ function applyLang(){
  $('btnCont').style.display=hasSave()?'':'none';
  const hb=$('hintBar');
  if(hb.style.display==='block')hb.textContent=isCoarse()?t('hintMob'):t('hintDesk');
+ if(tut.active)tutShowStep();
  refreshCtrlLabels();renderSlots();renderStatSum();renderRes();renderXP();renderQuickbar();
  if(invOpen)renderPanel();
  if(mapOpen)drawBigMap();
@@ -2896,7 +3118,8 @@ function freshStart(){
  landmarks=new Map();seenBiomes=new Set();farthest=0;
  quests=initQuests();starActive=null;starT=rand(50,90);
  giftedSet=new Set();explored=new Map();
- startPlay()}
+ startPlay();
+ if(!tutIsDone())setTimeout(()=>tutOpenIntro(false),600)}
  $('cnYes').onclick=()=>{$('confirmNew').classList.remove('show');freshStart()};
  $('cnNo').onclick=()=>{$('confirmNew').classList.remove('show');sfx('ui')};
  $('btnCont').onclick=()=>{ensureAudio();sfx('ui');
@@ -2948,7 +3171,6 @@ function titleUpdate(dt){
   if(p.life<=0){particles.splice(i,1);continue}p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=(p.g||0)*dt}}
 
 (function boot(){
- /* 환경설정 복원 — 최근 선택(언어/음소거) 우선, 없으면 세이브 값 */
  try{
   const p=JSON.parse(localStorage.getItem(PREF_KEY));
   if(p&&p.lang){LANG=p.lang;muted=!!p.muted}
@@ -2968,4 +3190,4 @@ function titleUpdate(dt){
  requestAnimationFrame(frame)})();
 </script>
 </body>
-</html>
+        </html>
